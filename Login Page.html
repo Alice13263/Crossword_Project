@@ -27,7 +27,7 @@
                             <input type = "text" class = "text input_field" id = "username_input" placeholder = "Minimum 8 Characters" required = "required">
                         </div>
                         <!-- Text will be added when the user inputs invalid info -->
-                        <p id = "error_username" class = "text"></p>
+                        <p id = "error_username" class = "text" style = "color: rgb(240,36,29);"></p>
                     </div>
                     <div class = "enter_div">
                         <div class = "info_enter_area">
@@ -35,16 +35,32 @@
                             <input type = "text" class = "text input_field" id = "password_input" placeholder = "Minimum 8 Characters" required = "required">
                         </div>
                         <!-- Text will be added when the user inputs invalid info -->
-                        <p id = "error_password" class = "text"></p>
+                        <p id = "error_password" class = "text" style = "color: rgb(240,36,29);"></p>
                     </div>
                 </div>
                 <div class = "submit_button_div">
-                    <button type = "button" class = "submit_button text elements_overlay">SUBMIT</button>
+                    <button type = "button" class = "submit_button text elements_overlay" onclick = "validateUsername()">SUBMIT</button>
                 </div>
                 <div class = "login_link_div">
                     <a class = "text" href = "Create Account Page.html">Don't have an account? Create one here</a>
                 </div>
             </main>
        </div>
+       <script>
+            // This regex tests for matching 'word characters' only accepts letters (not case sensitive), 0-9 and underscores - which is what I outlined in the key validation section was needed
+            const valid_username = /^\w+$/;
+            function validateUsername(){
+                var entered_username = document.getElementById("username_input").value;
+                if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
+                    const username_error = document.getElementById("error_username");
+                    username_error.innerText = "Must be at least 8 characters, only letters, numbers and underscores";
+                }
+                else {
+                    const username_no_error = document.getElementById("error_username");
+                    username_no_error.innerText = "";
+                    return true
+                }
+            };
+       </script>
     </body>
 </html>
