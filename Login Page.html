@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class = "submit_button_div">
-                    <button type = "button" class = "submit_button text elements_overlay" onclick = "validateUsername()">SUBMIT</button>
+                    <button type = "button" class = "submit_button text elements_overlay" onclick = "validLogin()">SUBMIT</button>
                 </div>
                 <div class = "login_link_div">
                     <a class = "text" href = "Create Account Page.html">Don't have an account? Create one here</a>
@@ -49,16 +49,35 @@
        <script>
             // This regex tests for matching 'word characters' only accepts letters (not case sensitive), 0-9 and underscores - which is what I outlined in the key validation section was needed
             const valid_username = /^\w+$/;
-            function validateUsername(){
-                var entered_username = document.getElementById("username_input").value;
+            // This regex tests for a valid password - it must have at least one upper case, one lower case, one integer and one special character
+            const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;
+            function validateUsername(username){
+                var entered_username = document.getElementById(username).value;
                 if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
                     const username_error = document.getElementById("error_username");
                     username_error.innerText = "Must be at least 8 characters, only letters, numbers and underscores";
                 }
-                else {
+                else{
                     const username_no_error = document.getElementById("error_username");
                     username_no_error.innerText = "";
                     return true
+                }
+            };
+            function validatePassword(password){
+                var entered_password = document.getElementById(password).value;
+                if ((entered_password.length < 8) || (valid_password.test(entered_password) == false)){
+                    const password_error = document.getElementById("error_password");
+                    password_error.innerText = "Must be at least 8 characters, at least 1 upper case, lower case, integer, and special character"
+                }
+                else{
+                    const password_no_error = document.getElementById("error_password");
+                    password_no_error.innerText = "";
+                    return true
+                }
+            };
+            function validLogin(){
+                if ((validateUsername("username_input") == true) && (validatePassword("password_input") == true)){
+                    location.reload(true)
                 }
             };
        </script>
