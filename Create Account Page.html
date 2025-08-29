@@ -5,6 +5,7 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	    <title>Create Account - Crossword Generator & Solver</title>
         <link rel = "stylesheet" href = "CSS_stylesheet.css">
+        <script src="https://unpkg.com/@supabase/supabase-js"></script>
     </head>
     <body>
        <div class = "wrapper">
@@ -55,8 +56,30 @@
             </main>
        </div>
        <script>
+            const supabase_url = "https://zduutknmvdwdubjcsmao.supabase.co";
+            const superbase_anon_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkdXV0a25tdmR3ZHViamNzbWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MDgxNzIsImV4cCI6MjA2OTk4NDE3Mn0.mKe-pEJE053OBdue9BdkMipNV5msWs_M6MCi8tZ5cnQ";
+            const supabase_client = supabase.createClient(supabase_url, superbase_anon_key);
             const valid_username = /^\w+$/;
             const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;
+            async function createUser(){
+                const username_valid = document.getElementById("username_input").value.trim();
+                const password_valid = document.getElementById("password_input").value.trim();
+                const {error} = await supabase_client
+                    .from("users")
+                    .insert([{username: username_valid, password: password_valid}]);
+                if (error) {
+                    if (error.message.includes("duplicate key value")){
+                        document.getElementById("error_username").innerText = "Username already taken";
+                    }
+                    else{
+                        document.getElementById("error_username").innerText = "Error: " + error.message;
+                    }
+                }
+                else{
+                    localStorage.setItem("username", username_valid);
+                    window.location.href = "Main Menu Page.html";
+                }
+            };
             function validateUsername(username){
                 var entered_username = document.getElementById(username).value;
                 if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
@@ -96,7 +119,7 @@
             };
             function validCreation(){
                 if ((validateUsername("username_input") == true) && (validatePassword("password_input") == true) && (validateMatchingPassword("password_input","repeat_password_input") == true)){
-                    location.reload(true)
+                    createUser()
                 }
             }
        </script>
