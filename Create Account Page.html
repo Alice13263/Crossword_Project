@@ -27,7 +27,7 @@
                             <input type = "text" class = "text input_field" id = "username_input" placeholder = "Minimum 8 Characters" required = "required">
                         </div>
                         <!-- Text will be added when the user inputs invalid info -->
-                        <p id = "error_username" class = "text"></p>
+                        <p id = "error_username" class = "text" style = "color: rgb(240,36,29);"></p>
                     </div>
                     <div class = "enter_div">
                         <div class = "info_enter_area">
@@ -35,7 +35,7 @@
                             <input type = "text" class = "text input_field" id = "password_input" placeholder = "Minimum 8 Characters" required = "required">
                         </div>
                         <!-- Text will be added when the user inputs invalid info -->
-                        <p id = "error_password" class = "text"></p>
+                        <p id = "error_password" class = "text" style = "color: rgb(240,36,29);"></p>
                     </div>
                     <div class = "enter_div">
                         <div class = "info_enter_area">
@@ -43,16 +43,62 @@
                             <input type = "text" class = "text input_field" id = "repeat_password_input" placeholder = "Minimum 8 Characters" required = "required">
                         </div>
                         <!-- Text will be added when the user inputs invalid info -->
-                        <p id = "error_password_repeat" class = "text"></p>
+                        <p id = "error_password_repeat" class = "text" style = "color: rgb(240,36,29);"></p>
                     </div>
                 </div>
                 <div class = "submit_button_div">
-                    <button type = "button" class = "create_account_button text elements_overlay">CREATE</button>
+                    <button type = "button" class = "create_account_button text elements_overlay" onclick = "validCreation()">CREATE</button>
                 </div>
                 <div class = "login_link_div">
                     <a class = "text" href = "Login Page.html">Already have an account? Login here</a>
                 </div>
             </main>
        </div>
+       <script>
+            const valid_username = /^\w+$/;
+            const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;
+            function validateUsername(username){
+                var entered_username = document.getElementById(username).value;
+                if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
+                    const username_error = document.getElementById("error_username");
+                    username_error.innerText = "Must be at least 8 characters, only letters, numbers and underscores";
+                }
+                else{
+                    const username_no_error = document.getElementById("error_username");
+                    username_no_error.innerText = "";
+                    return true
+                }
+            };
+            function validatePassword(password){
+                var entered_password = document.getElementById(password).value;
+                if ((entered_password.length < 8) || (valid_password.test(entered_password) == false)){
+                    const password_error = document.getElementById("error_password");
+                    password_error.innerText = "Must be at least 8 characters, at least 1 upper case, lower case, integer, and special character"
+                }
+                else{
+                    const password_no_error = document.getElementById("error_password");
+                    password_no_error.innerText = "";
+                    return true
+                }
+            };
+            function validateMatchingPassword(password, repeat_password){
+                const password1 = document.getElementById(password).value;
+                const password2 = document.getElementById(repeat_password).value;
+                if (password1 != password2){
+                    const repeat_password_error = document.getElementById("error_password_repeat");
+                    repeat_password_error.innerText = "Passwords must match"
+                }
+                else{
+                    const repeat_password_no_error = document.getElementById("error_password_repeat");
+                    repeat_password_no_error.innerText = "";
+                    return true 
+                }
+            };
+            function validCreation(){
+                if ((validateUsername("username_input") == true) && (validatePassword("password_input") == true) && (validateMatchingPassword("password_input","repeat_password_input") == true)){
+                    location.reload(true)
+                }
+            }
+       </script>
     </body>
 </html>
