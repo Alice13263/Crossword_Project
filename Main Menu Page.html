@@ -18,7 +18,12 @@
        </div>
        <script>
             const username = localStorage.getItem("username");
-            console.log("Hello "+ username);
+            if (username){
+                
+            }
+            else{
+                window.location.href = "http://127.0.0.1:5500/Login%20Page.html"
+            }
        </script>
     </body>
 </html>

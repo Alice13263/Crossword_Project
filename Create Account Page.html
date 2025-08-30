@@ -51,13 +51,13 @@
                     <button type = "button" class = "create_account_button text elements_overlay" onclick = "validCreation()">CREATE</button>
                 </div>
                 <div class = "login_link_div">
-                    <a class = "text" href = "Login Page.html">Already have an account? Login here</a>
+                    <a class = "text" href = "http://127.0.0.1:5500/Login%20Page.html">Already have an account? Login here</a>
                 </div>
             </main>
        </div>
        <script>
             const supabase_url = "https://zduutknmvdwdubjcsmao.supabase.co";
-            const superbase_anon_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkdXV0a25tdmR3ZHViamNzbWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0MDgxNzIsImV4cCI6MjA2OTk4NDE3Mn0.mKe-pEJE053OBdue9BdkMipNV5msWs_M6MCi8tZ5cnQ";
+            const superbase_anon_key = "sb_publishable_vMIDnCXJvUb-N7s7V69NoA_MUS5BP71";
             const supabase_client = supabase.createClient(supabase_url, superbase_anon_key);
             const valid_username = /^\w+$/;
             const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;

@@ -51,6 +51,23 @@
             const valid_username = /^\w+$/;
             // This regex tests for a valid password - it must have at least one upper case, one lower case, one integer and one special character
             const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;
+            async function loginUser(){
+                const username = document.getElementById("username_input").value.trim();
+                const password = document.getElementById("password_input").value.trim();
+                const response = await fetch("http://127.0.0.1:5000/userLogin",{
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({username, password})
+                });
+                const login_result = await response.json();
+                if (login_result.success) {
+                    localStorage.setItem("username", login_result.username);
+                    window.location.href = "Main Menu Page.html";
+                }
+                else{
+                    document.getElementById("error_username").innerText = "Invalid username or password";
+                }
+            };
             function validateUsername(username){
                 var entered_username = document.getElementById(username).value;
                 if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
@@ -77,7 +94,7 @@
             };
             function validLogin(){
                 if ((validateUsername("username_input") == true) && (validatePassword("password_input") == true)){
-                    location.reload(true)
+                    loginUser()
                 }
             };
        </script>
