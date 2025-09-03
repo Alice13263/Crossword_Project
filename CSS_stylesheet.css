@@ -132,3 +132,31 @@ html, body {
     align-items: center;
     padding-top: 2vw;
 }
+.crossword_header{
+    display: flex;
+    height: 6vw;
+    width: 100%;
+    padding-top: 1vw;
+    justify-content: space-between;
+}
+.back_button_div{
+    position: absolute;
+    width: 6vw;
+    height: 6vw;
+    left: 0;
+    margin-left: 0;
+    padding-left: 1vw;
+}
+.back_button{
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 25%;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/17/17445.png");
+    background-size: 100% 100%;
+}
+.clue_area{
+    height: 6vw;
+}

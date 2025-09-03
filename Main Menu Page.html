@@ -15,13 +15,18 @@
                     <button type = "button" class = "accessibility_menu_button elements_overlay"></button>
                 </div>
             </header>
+            <main>
+                <div class = "page_title_container">
+                    <h1 class = "text page_title">Main Menu</h1>
+                </div>
+                <a class = "text" href = "Crossword Clue Solver.html">Crossword Clue Solver</a>
+                <a class = "text" href = "">Crossword Puzzle Generator</a>
+                <a class = "text" href = "">Your History</a>
+            </main>
        </div>
        <script>
             const username = localStorage.getItem("username");
-            if (username){
-                
-            }
-            else{
+            if (!username){
                 window.location.href = "http://127.0.0.1:5500/Login%20Page.html"
             }
        </script>
