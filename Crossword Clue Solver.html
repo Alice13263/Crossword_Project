@@ -34,7 +34,7 @@
                     <div class = "enter_div">
                         <div class = "info_enter_area clue_area">
                             <p class = "text" style = "font-weight: bold;">Number of Letters:</p>
-                            <input type = "text" class = "text input_field" id = "clue_number_input" placeholder = "Minimum 3 Clues" required = "required">
+                            <input type = "number" class = "text input_field" id = "letter_number_input" placeholder= "1 to 20 Letters" required = "required" min = "1" max = "20">
                         </div>
                     </div>
                     <div class = "enter_div">
@@ -44,8 +44,11 @@
                         </div>
                     </div>
                 </div>
+                <div class = "enter_div">
+                        <p class= "text" id = "error_clue" style = "color: rgb(240,36,29);"></p>
+                </div>
                 <div class = "submit_button_div">
-                    <button type = "button" class = "submit_button text elements_overlay">SOLVE</button>
+                    <button type = "button" class = "submit_button text elements_overlay" onclick = "validClue()">SOLVE</button>
                 </div>
             </main>
         </div>
@@ -54,7 +57,47 @@
             if (!username){
                 window.location.href = "http://127.0.0.1:5500/Login%20Page.html"
             };
-            
+            const clue_error = document.getElementById("error_clue");
+            const valid_letters_given = /^[A-Za-z_]+$/;
+            const no_letters_input = document.querySelector("#letter_number_input");
+            const valid_numbers = /^[0-9]*$/;
+            no_letters_input.addEventListener("keypress", event => {
+                if (!valid_numbers.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
+            function validateClue(clue){
+                var entered_clue = document.getElementById(clue).value.trim();
+                if ((entered_clue.length < 3)||(entered_clue.length > 50)){
+                    clue_error.innerText = "Clue must be at least 3 characters, and no more than 50"
+                }
+                else{
+                    return true
+                }
+            };
+            function validateLetters(no_letters,letters_given){
+                var entered_letters = document.getElementById(letters_given).value.trim();
+                var entered_number = document.getElementById(no_letters).value;
+                entered_number = entered_number.replace(/^0+(?=\d)/,'');
+                if ((entered_number < 1)||(entered_number > 20)){
+                    clue_error.innerText = "Number of letters must be between 1 and 20"
+                }
+                else if (entered_letters.length != entered_number){
+                    clue_error.innerText = "Length of given letters must match the total number of letters"
+                }
+                else if (valid_letters_given.test(entered_letters) == false){
+                    clue_error.innerText = "Letters in answer should only contain letters or underscores"
+                }
+                else{
+                    return true
+                }
+            };
+            function validClue(){
+                if ((validateClue("clue_input") == true) && (validateLetters("letter_number_input","clue_letters_input") == true)){
+                    clue_error.innerText = "";
+                    location.reload();
+                }
+            }
         </script>
     </body>
 </html>     
