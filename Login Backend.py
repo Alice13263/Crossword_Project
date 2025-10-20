@@ -6,7 +6,7 @@ CORS(app,resources = {r"/*": {"origins": "http://127.0.0.1:5500"}})
 supabase_url = "https://zduutknmvdwdubjcsmao.supabase.co"
 supabase_service_key = "sb_secret_tNKw9op9nq6WRyWpv9QsqQ_6eA2mnaT"
 supabase: Client = create_client(supabase_url, supabase_service_key)
-@app.route("/userLogin", methods = ["POST"])
+@app.post("/userLogin")
 def login():
     user_info = request.get_json()
     username = user_info.get("username")
