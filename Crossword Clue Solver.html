@@ -94,6 +94,33 @@
                     event.preventDefault();
                 }
             });
+            async function solveClue(){
+                const clue_valid = document.getElementById("clue_input").value.trim();
+                const number_letters_valid = parseInt(document.getElementById("letter_number_input").value.trim());
+                const given_letters_valid = document.getElementById("clue_letters_input").value.trim();
+                const response = await fetch ("http://127.0.0.1:8000/solverAnswer",{
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({clue_valid, number_letters_valid, given_letters_valid})
+                });
+                const clue_result = await response.json();
+                console.log(clue_result);
+                //const answers = {};
+                //for(let i = 1; i<= 10; i++){
+                    //answers[`answer${i}`] = document.getElementById(`answer${i}`);
+                    // Clear the text in case a leftover answer is still present
+                    //answers[`answer${i}`].innerText = "";
+                //};
+                //const percentages = {};
+                //for(let i = 1; i<= 10; i++){
+                    //percentages[`perc${i}`] = document.getElementById(`perc${i}`);
+                    //percentages[`perc${i}`].innerText = "";
+                //};
+                //for(i in clue_result.results){
+                    //answers[`answer${i+1}`].innerText = `${i.answer}`;
+                    //percentages[`perc${i+1}`].innerText = `${i.percentage}`;
+                //};
+            };
             function validateClue(clue){
                 var entered_clue = document.getElementById(clue).value.trim();
                 if ((entered_clue.length < 3)||(entered_clue.length > 50)){
@@ -123,7 +150,7 @@
             function validClue(){
                 if ((validateClue("clue_input") == true) && (validateLetters("letter_number_input","clue_letters_input") == true)){
                     clue_error.innerText = "";
-                    location.reload();
+                    solveClue()
                 }
             }
         </script>
