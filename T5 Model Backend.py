@@ -6,8 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import torch
 import re
 import uvicorn
-t5_model = T5ForConditionalGeneration.from_pretrained("t5-base")
-t5_tokenizer = T5Tokenizer.from_pretrained("t5-base")
+t5_model = T5ForConditionalGeneration.from_pretrained("./crosswordSolverFinetuned")
+t5_tokenizer = T5Tokenizer.from_pretrained("./crosswordSolverFinetuned")
 t5_model.eval()
 app = FastAPI()
 app.add_middleware(
@@ -23,7 +23,10 @@ class clueSolver(BaseModel):
     given_letters_valid: str
 @app.post("/solverAnswer")
 async def solveClue(clue_info: clueSolver):
-    t5_prompt = f"answer question: {clue_info.clue_valid} (length {clue_info.number_letters_valid}) (pattern {clue_info.given_letters_valid})"
+    t5_prompt = (f"Clue: {clue_info.clue_valid}\n"
+                 f"Keyword:\n"
+                 f"Answer:"
+    )
     t5_input_tokens = t5_tokenizer.encode(t5_prompt, return_tensors = "pt")
     with torch.no_grad():
         t5_outputs = t5_model.generate(
