@@ -160,7 +160,7 @@ html, body {
 .clue_area{
     height: 6vw;
 }
-.answers_container{
+#answers_container{
     width: 40vw;
     height: 40vw;
     display: none;

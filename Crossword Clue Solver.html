@@ -50,7 +50,8 @@
                 <div class = "submit_button_div">
                     <button type = "button" class = "submit_button text elements_overlay" onclick = "validClue()">SOLVE</button>
                 </div>
-                <div class = "answers_container">
+                <!--Changed to id as changing css of a class returns an array which doesn't work-->
+                <div id = "answers_container">
                     <div class = "answers_column">
                         <h3 class = "text page_subtitle" style = "font-weight: bold;">Answers</h3>
                         <p class = "text" id = "answer1"></p>
@@ -104,22 +105,15 @@
                     body: JSON.stringify({clue_valid, number_letters_valid, given_letters_valid})
                 });
                 const clue_result = await response.json();
-                console.log(clue_result);
-                //const answers = {};
-                //for(let i = 1; i<= 10; i++){
-                    //answers[`answer${i}`] = document.getElementById(`answer${i}`);
-                    // Clear the text in case a leftover answer is still present
-                    //answers[`answer${i}`].innerText = "";
-                //};
-                //const percentages = {};
-                //for(let i = 1; i<= 10; i++){
-                    //percentages[`perc${i}`] = document.getElementById(`perc${i}`);
-                    //percentages[`perc${i}`].innerText = "";
-                //};
-                //for(i in clue_result.results){
-                    //answers[`answer${i+1}`].innerText = `${i.answer}`;
-                    //percentages[`perc${i+1}`].innerText = `${i.percentage}`;
-                //};
+                document.getElementById("answers_container").style.display = "flex";
+                for(let i = 1; i < 11; i++){
+                    var answer = "answer" + i.toString();
+                    var answer_location = document.getElementById(answer)
+                    answer_location.innerText = clue_result.results[i-1].answer;
+                    var percentage = "perc" + i.toString();
+                    var perc_location = document.getElementById(percentage);
+                    perc_location.innerText = clue_result.results[i-1].percentage;
+                };
             };
             function validateClue(clue){
                 var entered_clue = document.getElementById(clue).value.trim();

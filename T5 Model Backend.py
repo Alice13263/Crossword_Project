@@ -72,7 +72,7 @@ async def solveClue(clue_info: clueSolver):
         regex_match = True if (re.fullmatch(matching_pattern_regex, answer, re.IGNORECASE)) else False
         t5_answers_ranked.append({"answer": answer, "percentage": confidence, "regex_match": regex_match, "length_match": length_match})
     # Reverse = True is used to flip the list, as False == 0, comes before True == 1, when I actually need the True values to be first. Also need confidence levels to start with the highest, so descending order
-    t5_answers_ordered = sorted(t5_answers_ranked, key = lambda ans: (ans["regex_match"], ans["length_match"], ans["percentage"]), reverse = True)
+    t5_answers_ordered = sorted(t5_answers_ranked, key = lambda ans: (ans["percentage"], ans["regex_match"], ans["length_match"]), reverse = True)
     t5_top_10 = t5_answers_ordered[:10]
     return JSONResponse({"results": t5_top_10})
 if __name__ == "__main__":
