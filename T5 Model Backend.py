@@ -23,16 +23,13 @@ class clueSolver(BaseModel):
     given_letters_valid: str
 @app.post("/solverAnswer")
 async def solveClue(clue_info: clueSolver):
-    t5_prompt = (f"Clue: {clue_info.clue_valid}\n"
-                 f"Keyword:\n"
-                 f"Answer:"
-    )
+    t5_prompt = (f"Clue: {clue_info.clue_valid}\n"f"Keyword:\n"f"Answer:")
     t5_input_tokens = t5_tokenizer.encode(t5_prompt, return_tensors = "pt")
     with torch.no_grad():
         t5_outputs = t5_model.generate(
             t5_input_tokens,
-            max_length = clue_info.number_letters_valid + 5,
             min_length = 2,
+            max_length = clue_info.number_letters_valid + 5,
             num_beams = 25,
             num_return_sequences = 20,
             return_dict_in_generate = True,
@@ -41,39 +38,40 @@ async def solveClue(clue_info: clueSolver):
     t5_output_sequences = t5_outputs.sequences
     t5_output_scores = t5_outputs.scores
     t5_answers = []
-    for i in t5_output_sequences:
-        t5_answer_text = t5_tokenizer.decode(i, skip_special_tokens = True).strip()
+    for seq in t5_output_sequences:
+        t5_answer_text = t5_tokenizer.decode(seq, skip_special_tokens = True).strip()
         sum_log_probs = 0
         tokens_count = 0
-        for j in range (len(i)-1):
-            t5_tensor = t5_output_scores[j]
-            next_token = i[j+1]
+        for token in range (len(seq)-1):
+            t5_tensor = t5_output_scores[token]
+            next_token = seq[token+1]
             current_log_prob = torch.log_softmax(t5_tensor, dim = 1)[0, next_token].item()
             sum_log_probs += current_log_prob
             tokens_count += 1
         average_log_prob = sum_log_probs / tokens_count
-        confidence_level = torch.exp(torch.tensor(average_log_prob)).item()*100
-        confidence_level = round(confidence_level, 2)
+        confidence_level = round(torch.exp(torch.tensor(average_log_prob)).item()*100,2)
         t5_answers.append({"answer": t5_answer_text.lower(), "percentage": confidence_level})
-    # Sets detect duplicates, so all answers will be passed through here, and then added to another list once checked
-    t5_duplicates = set()
     t5_answers_unique = []
-    for i in t5_answers:
-        if i["answer"] not in t5_duplicates:
-            t5_duplicates.add(i["answer"])
-            t5_answers_unique.append(i)
-    # Regex does not accept _ as a wildcard letter, so all instances will be replaced with ., so that the list can be ordered by matching patterns
-    matching_pattern_regex = clue_info.given_letters_valid.replace("_", ".")
+    for answer in t5_answers:
+        if answer["answer"] not in t5_answers_unique:
+            t5_answers_unique.append(answer)
+    # Regular expression does not accept _ as a wildcard letter, so all instances will be replaced with ., so that the list can be ordered by matching patterns
+    matching_pattern = clue_info.given_letters_valid.replace("_", ".")
     t5_answers_ranked = []
-    for i in t5_answers_unique:
-        answer = i["answer"]
-        confidence = i["percentage"]
-        length_match = True if (len(answer) == clue_info.number_letters_valid) else False
-        regex_match = True if (re.fullmatch(matching_pattern_regex, answer, re.IGNORECASE)) else False
-        t5_answers_ranked.append({"answer": answer, "percentage": confidence, "regex_match": regex_match, "length_match": length_match})
+    for unique_answer in t5_answers_unique:
+        answer = unique_answer["answer"]
+        confidence = unique_answer["percentage"]
+        if (len(answer) == clue_info.number_letters_valid):
+            length_match = True
+        else:
+            length_match = False
+        if (re.fullmatch(matching_pattern, answer, re.IGNORECASE)):
+            pattern_match = True
+        else:
+            pattern_match = False
+        t5_answers_ranked.append({"answer": answer, "percentage": confidence, "pattern_match": pattern_match, "length_match": length_match})
     # Reverse = True is used to flip the list, as False == 0, comes before True == 1, when I actually need the True values to be first. Also need confidence levels to start with the highest, so descending order
-    t5_answers_ordered = sorted(t5_answers_ranked, key = lambda ans: (ans["percentage"], ans["regex_match"], ans["length_match"]), reverse = True)
-    t5_top_10 = t5_answers_ordered[:10]
-    return JSONResponse({"results": t5_top_10})
+    t5_answers_ordered = sorted(t5_answers_ranked, key = lambda ans: (ans["percentage"], ans["pattern_match"], ans["length_match"]), reverse = True)[:10]
+    return JSONResponse({"results": t5_answers_ordered})
 if __name__ == "__main__":
     uvicorn.run("T5 Model Backend:app", host="127.0.0.1", port=8000, reload=True)
