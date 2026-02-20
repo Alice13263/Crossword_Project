@@ -5,7 +5,7 @@ import torch
 #Supervised Fine Tuning trains the model to perform a specific task (here to generate clues)
 from trl import SFTTrainer, SFTConfig
 #LoRA allows me to train the model on a small scale that doesn't require too many resources
-from peft import LoraConfig, get_peft_model
+from peft import LoraConfig
 #Using the same dataset as the clue solver for coherency in responses
 crossword_dataset = load_dataset("azugarini/clue-instruct")
 #Using TinyLlama to be able to fine tune the model on my device without lots of processing power
