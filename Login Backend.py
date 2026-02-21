@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from supabase import create_client, Client
+import os
+from dotenv import load_dotenv
 app = Flask(__name__)
 CORS(app,resources = {r"/*": {"origins": "http://127.0.0.1:5500"}})
-supabase_url = "https://zduutknmvdwdubjcsmao.supabase.co"
-supabase_service_key = "sb_secret_tNKw9op9nq6WRyWpv9QsqQ_6eA2mnaT"
+load_dotenv()
+supabase_url = os.getenv("supabase_url")
+supabase_service_key = os.getenv("supabase_service_key")
 supabase: Client = create_client(supabase_url, supabase_service_key)
 @app.post("/userLogin")
 def login():

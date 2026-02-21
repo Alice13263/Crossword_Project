@@ -1,0 +1,67 @@
+<!--Setting up the basic layout of the history page-->
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	    <title>Your History - Crossword Generator & Solver</title>
+        <link rel = "stylesheet" href = "CSS_stylesheet.css">
+    </head>
+    <body>
+        <div class = "wrapper">
+            <a class = "top"></a>
+            <header class = "crossword_header">
+                <div class = "back_button_div">
+                    <a href = "Main Menu Page.html">
+                        <button type = "button" class = "back_button elements_overlay"></button>
+                    </a>
+                </div>
+                <div class = "accessibility_menu_button_div">
+                    <!-- Add the function to the accesibility menu button when the page has been created -->
+                    <button type = "button" class = "accessibility_menu_button elements_overlay"></button>
+                </div>
+            </header>
+            <main>
+                <div class = "page_title_container">
+                    <h1 class = "text page_title">Your History</h1>
+                </div>
+                <div class = "page_button_container">
+                    <div class = "button_image_container">
+                        <!--Button for puzzle history added, so in the future the page can be added once the feature is implemented-->
+                        <div class = "history_button_div">
+                            <button type = "button" class = "history_button text elements_overlay" id = "puzzle_history">Crossword Puzzles</button>
+                        </div>
+                        <div class = "history_image_div">
+                            <!--Images help user navigate the page better-->
+                            <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/British_crossword.svg/250px-British_crossword.svg.png" alt = "Puzzle History" height = 200vw width = 200vw>
+                        </div>
+                    </div>
+                    <div class = "button_image_container">
+                        <!--Button for clue history added, so that the page will be able to be accessed-->
+                        <div class = "history_button_div">
+                            <button type = "button" class = "history_clue_button text elements_overlay" id = "clue_solver_history">Crossword Clue Solver</button>
+                        </div>
+                        <div class = "history_image_div">
+                            <!--Images help user navigate the page better-->
+                            <img src = "https://www.onlygfx.com/wp-content/uploads/2021/12/magnifying-glass-clipart.png" alt = "Clue Solver History" height = 200vw width = 200vw>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script>
+            const username = localStorage.getItem("username");
+            if (!username){
+                window.location.href = "http://127.0.0.1:5500/Login%20Page.html"
+            }
+            //As I couldn't implement this feature, the button does not have an action, but it can be added easily in the future
+            document.getElementById("puzzle_history").onclick = function(){
+                location.href = "";
+            };
+            //Takes the user to the clue solver history page
+            document.getElementById("clue_solver_history").onclick = function(){
+                location.href = "Clue Solver History.html";
+            };
+        </script>
+    </body>
+</html>
