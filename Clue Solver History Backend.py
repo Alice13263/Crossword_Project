@@ -10,7 +10,7 @@ CORS(app,resources = {r"/*": {"origins": "http://127.0.0.1:5500"}})
 #Connecting to the database securely
 load_dotenv()
 supabase_url = os.getenv("supabase_url")
-supabase_service_key = os.getenv("supabase_secret_key")
+supabase_service_key = os.getenv("supabase_service_key")
 supabase: Client = create_client(supabase_url, supabase_service_key)
 #Sending the JSON to this directory, for the frontend to be able to access it
 @app.post("/clueSolverHistory")

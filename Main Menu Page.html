@@ -19,16 +19,49 @@
                 <div class = "page_title_container">
                     <h1 class = "text page_title">Main Menu</h1>
                 </div>
-                <a class = "text" href = "Crossword Clue Solver.html">Crossword Clue Solver</a>
-                <a class = "text" href = "Crossword Puzzle Generator.html">Crossword Puzzle Generator</a>
-                <a class = "text" href = "Player History.html">Your History</a>
+                <!--Improving the main menu by formatting all the elements-->
+                <div class = "page_button_container">
+                    <div class = "button_image_container">
+                        <!--Buttons will help the user traverse the website-->
+                        <div class = "menu_button_div">
+                            <button type = "button" class = "menu_button text elements_overlay" id = "puzzle_generator">Crossword Puzzle Generator</button>
+                        </div>
+                        <!--Images help explain the website and match the history page-->
+                        <div class = "menu_image_div">
+                            <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/British_crossword.svg/250px-British_crossword.svg.png" alt = "Puzzle Generator" height = 200vw width = 200vw>
+                        </div>
+                    </div>
+                    <div class = "button_image_container">
+                        <div class = "menu_button_div">
+                            <button type = "button" class = "menu_button text elements_overlay" style = "width: 25vw;" id = "clue_solver">Crossword Clue Solver</button>
+                        </div>
+                        <div class = "menu_image_div">
+                            <img src = "https://www.onlygfx.com/wp-content/uploads/2021/12/magnifying-glass-clipart.png" alt = "Clue Solver" height = 200vw width = 200vw>
+                        </div>
+                    </div>
+                </div>
+                <!--History button is less important so is underneath, and doesn't have an image-->
+                <div class = "history_button_container">
+                    <button type = "button" class = "menu_button text elements_overlay" style = "width: 15vw;" id = "your_history">Your History</button>
+                </div>
             </main>
        </div>
        <script>
             const username = localStorage.getItem("username");
             if (!username){
                 window.location.href = "http://127.0.0.1:5500/Login%20Page.html"
-            }
+            };
+            //Functions for each button are activated when they are clicked
+            document.getElementById("puzzle_generator").onclick = function(){
+                //Each button takes the user to the corresponding webpage
+                location.href = "Crossword Puzzle Generator.html";
+            };
+            document.getElementById("clue_solver").onclick = function(){
+                location.href = "Crossword Clue Solver.html";
+            };
+            document.getElementById("your_history").onclick = function(){
+                location.href = "Player History.html";
+            };
        </script>
     </body>
 </html>

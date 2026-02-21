@@ -260,3 +260,31 @@ html, body {
     justify-content: space-evenly;
     align-items: center;
 }
+.menu_button_div{
+    display: flex;
+    width: 100%;
+    max-height: 35vw;
+    justify-content: center;
+    align-items: center;
+}
+.menu_image_div{
+    display: flex;
+    width: 100%;
+    max-height: 35vw;
+    justify-content: center;
+    align-items: center;
+}
+.menu_button{
+    width: 30vw;
+    border: 1px solid black;
+    padding: 0.5vw 1vw;
+    border-radius: 5%;
+    font-size: 2vw;
+    font-weight: bold;
+}
+.history_button_container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
