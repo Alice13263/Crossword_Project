@@ -1,3 +1,4 @@
+<!--Create Account Page-->
 <!DOCTYPE html>
 <html lang="en-GB">
     <head>
@@ -56,17 +57,21 @@
             </main>
        </div>
        <script>
+            //Connecting to the database
             const supabase_url = "https://zduutknmvdwdubjcsmao.supabase.co";
             const superbase_anon_key = "sb_publishable_vMIDnCXJvUb-N7s7V69NoA_MUS5BP71";
             const supabase_client = supabase.createClient(supabase_url, superbase_anon_key);
+            //Valid regex for username and password
             const valid_username = /^\w+$/;
             const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;
+            //Function to create a user runs once values are inputted
             async function createUser(){
                 const username_valid = document.getElementById("username_input").value.trim();
                 const password_valid = document.getElementById("password_input").value.trim();
                 const {error} = await supabase_client
                     .from("users")
                     .insert([{username: username_valid, password: password_valid}]);
+                //Displays errors if user tries to take a username already being used
                 if (error) {
                     if (error.message.includes("duplicate key value")){
                         document.getElementById("error_username").innerText = "Username already taken";
@@ -75,11 +80,13 @@
                         document.getElementById("error_username").innerText = "Error: " + error.message;
                     }
                 }
+                //If valid, user is logged in
                 else{
                     localStorage.setItem("username", username_valid);
                     window.location.href = "Main Menu Page.html";
                 }
             };
+            //Function to validate the username
             function validateUsername(username){
                 var entered_username = document.getElementById(username).value;
                 if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
@@ -92,6 +99,7 @@
                     return true
                 }
             };
+            //Function to validate the password
             function validatePassword(password){
                 var entered_password = document.getElementById(password).value;
                 if ((entered_password.length < 8) || (valid_password.test(entered_password) == false)){
@@ -104,6 +112,7 @@
                     return true
                 }
             };
+            //Function to validate if passwords match
             function validateMatchingPassword(password, repeat_password){
                 const password1 = document.getElementById(password).value;
                 const password2 = document.getElementById(repeat_password).value;
@@ -117,6 +126,7 @@
                     return true 
                 }
             };
+            //Function to create a user
             function validCreation(){
                 if ((validateUsername("username_input") == true) && (validatePassword("password_input") == true) && (validateMatchingPassword("password_input","repeat_password_input") == true)){
                     createUser()

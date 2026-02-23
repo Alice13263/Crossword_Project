@@ -1,17 +1,21 @@
+#T5 Model Training File
 from datasets import load_dataset
 from transformers import (T5Tokenizer, T5ForConditionalGeneration, DataCollatorForSeq2Seq, TrainingArguments, Trainer)
 crossword_dataset = load_dataset("azugarini/clue-instruct")
 model = T5ForConditionalGeneration.from_pretrained("t5-base")
 solver_tokenizer = T5Tokenizer.from_pretrained("t5-base")
+#Sorting the dataset into the desired format for processing
 def setup(data):
     clue = f"Clue: {data["clues"]}"
     answer = data["keyword"]
+    #Encoding the tokens in the dataset
     encode_tokens = solver_tokenizer(clue, truncation = True, padding = "max_length", max_length = 64)
     encode_outputs = solver_tokenizer(answer, truncation = True, padding = "max_length", max_length = 64)
     encode_tokens["labels"] = encode_outputs["input_ids"]
     return encode_tokens
      
 tokenized_crossword_dataset = crossword_dataset.map(setup, batched = False, remove_columns = crossword_dataset["train"].column_names)
+#Setting the training parameters for the model
 training = TrainingArguments(
     output_dir = "./crosswordSolverFinetuned",
     learning_rate = 3e-4,
@@ -25,6 +29,7 @@ training = TrainingArguments(
     push_to_hub = False 
 )
 collated_data = DataCollatorForSeq2Seq(solver_tokenizer, model = model)
+#Training the model
 trainer = Trainer(
     model = model,
     args = training,
@@ -34,5 +39,6 @@ trainer = Trainer(
     data_collator = collated_data,
 )
 trainer.train()
+#Saving the trained model to a new directory
 model.save_pretrained("./crosswordSolverFinetuned")
 solver_tokenizer.save_pretrained("./crosswordSolverFinetuned")

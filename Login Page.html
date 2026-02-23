@@ -1,3 +1,4 @@
+<!--Login Page-->
 <!DOCTYPE html>
 <html lang="en-GB">
     <head>
@@ -51,6 +52,7 @@
             const valid_username = /^\w+$/;
             // This regex tests for a valid password - it must have at least one upper case, one lower case, one integer and one special character
             const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%?=*&£]).*$/;
+            //Function to log in user when their inputs are valid
             async function loginUser(){
                 const username = document.getElementById("username_input").value.trim();
                 const password = document.getElementById("password_input").value.trim();
@@ -60,6 +62,7 @@
                     body: JSON.stringify({username, password})
                 });
                 const login_result = await response.json();
+                //If successful, user is logged in
                 if (login_result.success) {
                     localStorage.setItem("username", login_result.username);
                     window.location.href = "Main Menu Page.html";
@@ -68,6 +71,7 @@
                     document.getElementById("error_username").innerText = "Invalid username or password";
                 }
             };
+            //Function to validate the username
             function validateUsername(username){
                 var entered_username = document.getElementById(username).value;
                 if ((entered_username.length < 8) || (valid_username.test(entered_username) == false)){
@@ -80,6 +84,7 @@
                     return true
                 }
             };
+            //Function to validate the password
             function validatePassword(password){
                 var entered_password = document.getElementById(password).value;
                 if ((entered_password.length < 8) || (valid_password.test(entered_password) == false)){
@@ -92,6 +97,7 @@
                     return true
                 }
             };
+            //Function to login
             function validLogin(){
                 if ((validateUsername("username_input") == true) && (validatePassword("password_input") == true)){
                     loginUser()

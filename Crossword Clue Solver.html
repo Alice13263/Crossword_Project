@@ -1,3 +1,4 @@
+<!--Crossword Clue Solver Page-->
 <!DOCTYPE html>
 <html lang="en-GB">
     <head>
@@ -27,18 +28,21 @@
                 <div class = "enter_info_container">
                     <div class = "enter_div">
                         <div class = "info_enter_area clue_area">
+                            <!--User enters their clue here-->
                             <p class = "text" style = "font-weight: bold;">Enter the Clue:</p>
                             <input type = "text" class = "text input_field" id = "clue_input" placeholder = "Minimum 3 Characters" required = "required">
                         </div>
                     </div>
                     <div class = "enter_div">
                         <div class = "info_enter_area clue_area">
+                            <!--User enters the number of letters here-->
                             <p class = "text" style = "font-weight: bold;">Number of Letters:</p>
                             <input type = "number" class = "text input_field" id = "letter_number_input" placeholder= "1 to 20 Letters" required = "required" min = "1" max = "20">
                         </div>
                     </div>
                     <div class = "enter_div">
                         <div class = "info_enter_area clue_area">
+                            <!--User enters the letters they have here-->
                             <p class = "text" style = "font-weight: bold;">Letters Given:</p>
                             <input type = "text" class = "text input_field" id = "clue_letters_input" placeholder= "E.g. a_p_e" required = "required">
                         </div>
@@ -90,15 +94,18 @@
             const valid_letters_given = /^[A-Za-z_]+$/;
             const no_letters_input = document.querySelector("#letter_number_input");
             const valid_numbers = /^[0-9]*$/;
+            //Only allows numbers to be inputted in this field
             no_letters_input.addEventListener("keypress", event => {
                 if (!valid_numbers.test(event.key)) {
                     event.preventDefault();
                 }
             });
+            //Function to solve the clue once inputs are valid
             async function solveClue(){
                 const clue_valid = document.getElementById("clue_input").value.trim();
                 const number_letters_valid = parseInt(document.getElementById("letter_number_input").value.trim());
                 const given_letters_valid = document.getElementById("clue_letters_input").value.trim();
+                //Awaiting the results in the JSON from the backend
                 const response = await fetch ("http://127.0.0.1:8000/solverAnswer",{
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
@@ -106,6 +113,7 @@
                     body: JSON.stringify({clue_valid, number_letters_valid, given_letters_valid, username})
                 });
                 const clue_result = await response.json();
+                //Formatting the answers and percentages on screen
                 document.getElementById("answers_container").style.display = "flex";
                 for(let i = 1; i < 11; i++){
                     var answer = "answer" + i.toString();
@@ -116,6 +124,7 @@
                     perc_location.innerText = clue_result.results[i-1].percentage;
                 };
             };
+            //Function to validate the clue
             function validateClue(clue){
                 var entered_clue = document.getElementById(clue).value.trim();
                 if ((entered_clue.length < 3)||(entered_clue.length > 50)){
@@ -125,6 +134,7 @@
                     return true
                 }
             };
+            //Function to validate the number of letters and letters given
             function validateLetters(no_letters,letters_given){
                 var entered_letters = document.getElementById(letters_given).value.trim();
                 var entered_number = document.getElementById(no_letters).value;
@@ -142,6 +152,7 @@
                     return true
                 }
             };
+            //Function to validate the whole clue
             function validClue(){
                 if ((validateClue("clue_input") == true) && (validateLetters("letter_number_input","clue_letters_input") == true)){
                     clue_error.innerText = "";

@@ -1,3 +1,4 @@
+<!--Crossword Puzzle Generator Page-->
 <!DOCTYPE html>
 <html lang="en-GB">
     <head>
@@ -28,6 +29,7 @@
                 <div class = "enter_info_container">
                     <div class = "enter_div">
                         <div class = "info_enter_area clue_area">
+                            <!--User inputs their theme here-->
                             <p class = "text" style = "font-weight: bold;">Choose a theme:</p>
                             <input type = "text" class = "text input_field" id = "theme_input" placeholder = "Minimum 3 Characters" required = "required">
                         </div>
@@ -35,6 +37,7 @@
                     </div>
                     <div class = "enter_div">
                         <div class = "info_enter_area clue_area">
+                            <!--User inputs the number of clues here-->
                             <p class = "text" style = "font-weight: bold;">Number of Clues:</p>
                             <input type = "number" class = "text input_field" id = "clue_number_input" placeholder= "3 to 50 Clues" required = "required" min = "1" max = "50">
                         </div>
@@ -56,11 +59,13 @@
             const theme_error = document.getElementById("error_theme");
             const no_clues_input = document.querySelector("#clue_number_input");
             const valid_numbers = /^[0-9]*$/;
+            //Only numbers can be inputted into this field
             no_clues_input.addEventListener("keypress", event => {
                 if (!valid_numbers.test(event.key)) {
                     event.preventDefault();
                 }
             });
+            //Function to validate the theme
             function validTheme(theme){
                 var entered_theme = document.getElementById(theme).value.trim();
                 if ((entered_theme.length < 3)||(entered_theme.length > 50)){
@@ -70,6 +75,7 @@
                     return true
                 }
             };
+            //Function to validate the number of clues
             function validateNumberClues(clues){
                 var num_clues = document.getElementById(clues).value;
                 num_clues = num_clues.replace(/^0+(?=\d)/,'');
@@ -80,6 +86,7 @@
                     return true
                 }
             };
+            //Function to run the puzzle generation
             function validGenerate(){
                 if ((validTheme("theme_input") == true) && (validateNumberClues("clue_number_input") == true)){
                     theme_error.innerText = "";

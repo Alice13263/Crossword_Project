@@ -1,5 +1,7 @@
+#T5 Model Backend File
 from pydantic import BaseModel
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+#Importing FastAPI to process the responses
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -124,18 +126,25 @@ async def solveClue(clue_info: clueSolver):
         t5_output_sequences = t5_outputs.sequences
         t5_output_scores = t5_outputs.scores
         t5_answers = []
+        #Iteration to decode tokens and calculate percentages
         for seq in t5_output_sequences:
+            #Decodes the tokens of the current answer
             t5_answer_text = t5_tokenizer.decode(seq, skip_special_tokens = True).strip()
             sum_log_probs = 0
             tokens_count = 0
+            #Calculating the token level log probabilties/confidence percentages
             for token in range (len(seq)-1):
                 t5_tensor = t5_output_scores[token]
                 next_token = seq[token+1]
+                #Calculates log of each token
                 current_log_prob = torch.log_softmax(t5_tensor, dim = 1)[0, next_token].item()
                 sum_log_probs += current_log_prob
                 tokens_count += 1
+            #Average of tokens for that answer
             average_log_prob = sum_log_probs / tokens_count
+            #Converting to a percentage and rounding to 2 decimal places
             confidence_level = round(torch.exp(torch.tensor(average_log_prob)).item()*100,2)
+            #Adding the answer and percentage to the array
             t5_answers.append({"answer": t5_answer_text.lower(), "percentage": confidence_level})
         t5_answers_unique = []
         for answer in t5_answers:

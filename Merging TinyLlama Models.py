@@ -1,3 +1,4 @@
+#Merging Tiny Llama Models File
 #LoRA configurations do not contain the actual model, so my finetuned version must be merged with the base model
 #This file only runs once
 import torch
